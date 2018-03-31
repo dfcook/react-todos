@@ -14,14 +14,12 @@ export default ({ onNewTodo }: AddTodoProps) => {
   };
 
   return (
-    <div className="my-2">
-      <Input
-        autoFocus={true}
-        type="text"
-        className="form-control"
-        placeholder="What needs to be done?"
-        onKeyUp={keyHandler}
-      />
-    </div>
+    <Input
+      autoFocus={true}
+      type="text"
+      className="form-control"
+      placeholder="What needs to be done?"
+      onKeyUp={keyHandler}
+    />
   );
 };
