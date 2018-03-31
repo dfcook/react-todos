@@ -1,0 +1,23 @@
+@import '~antd/dist/antd.css';
+
+body {
+  background-color: #eaeaea ;
+}
+
+h1 {
+  width: 100%;
+  font-size: 70px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 100px;
+  color: #b3b3b3;
+  text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
+}
+
+.ant-table {
+  margin-top: 1.1em;
+}
+
+.completed {
+  text-decoration: line-through;
+}
