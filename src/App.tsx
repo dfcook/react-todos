@@ -63,7 +63,7 @@ class App extends Component<{}, AppState> {
       case 'ACTIVE':
         return todos.filter(todo => !todo.completed);
       case 'COMPLETED':
-      return todos.filter(todo => todo.completed);
+        return todos.filter(todo => todo.completed);
       default:
         return todos;
     }
