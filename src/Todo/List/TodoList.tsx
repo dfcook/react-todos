@@ -4,19 +4,30 @@ import Todo from '../../types/Todo';
 import Footer from './Footer';
 
 interface TodoListProps {
+  filter: string;
   todos: Todo[];
-  todosLoading: boolean;
-  onToggleTodo: (todo: Todo) => void;
-  onDeleteTodo: (todo: Todo) => void;
-  onUpdateFilter: (filter: string) => void;
+  toggleTodo: (todo: Todo) => void;
+  deleteTodo: (todo: Todo) => void;
+  updateFilter: (filter: string) => void;
 }
 
-export default ({ todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
+export default ({ filter, todos, toggleTodo, deleteTodo, updateFilter }: TodoListProps) => {
+  const getTodos = () => {
+    switch (filter) {
+      case 'ACTIVE':
+        return todos.filter(todo => !todo.completed);
+      case 'COMPLETED':
+        return todos.filter(todo => todo.completed);
+      default:
+        return todos;
+    }
+  };
+
   const columns = [{
     key: 'complete',
     width: '10%',
     render: (text: string, record: Todo) => (
-      <input type="checkbox" defaultChecked={record.completed} onClick={() => onToggleTodo(record)} />
+      <input type="checkbox" defaultChecked={record.completed} onClick={() => toggleTodo(record)} />
     )
   }, {
     key: 'title',
@@ -31,7 +42,7 @@ export default ({ todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilte
     key: 'delete',
     width: '10%',
     render: (text: string, record: Todo) => (
-      <span style={{width: '100%', textAlign: 'right'}} onClick={() => onDeleteTodo(record)}>
+      <span style={{width: '100%', textAlign: 'right'}} onClick={() => deleteTodo(record)}>
         <Button>Delete</Button>
       </span>
     )
@@ -41,12 +52,11 @@ export default ({ todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilte
     <Table
       rowKey={(record: Todo) => record.id.toString()}
       columns={columns}
-      dataSource={todos}
+      dataSource={getTodos()}
       bordered={true}
       pagination={false}
-      loading={todosLoading}
       size="middle"
-      footer={() => <Footer todos={todos} onFilterChange={onUpdateFilter} />}
+      footer={() => <Footer todos={todos} updateFilter={updateFilter} />}
     />
   );
 };
