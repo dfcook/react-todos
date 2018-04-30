@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import axios from 'axios';
 import { Col, Row } from 'antd';
 import './App.css';
 
@@ -9,15 +8,17 @@ import AddTodo from './Todo/Add/AddTodoContainer';
 import Todo from './types/Todo';
 
 import AppState from './store/AppState';
+import { bindActionCreators } from 'redux';
+import Dispatch from './store/dispatch';
+import { loadTodos } from './store/actions';
 
 interface AppProps {
+  loadTodos: () => void;
   filter: string;
   todos: Todo[];
 }
 
 class App extends Component<AppProps, {}> {
-  // private readonly baseUrl = 'https://todobackend.apphb.com/todo-backend';
-
   render() {
     return (
     <div>
@@ -41,13 +42,11 @@ class App extends Component<AppProps, {}> {
   }
 
   async refreshTodos() {
-    /*this.setState({ todosLoading: true });
-    const response = await axios.get<Todo[]>(this.baseUrl);
-    this.setState({ todos: response.data, todosLoading: false });*/
+    this.props.loadTodos();
   }
 
-  async componentDidMount() {
-    await this.refreshTodos();
+  componentDidMount() {
+    this.refreshTodos();
   }
 }
 
@@ -58,4 +57,8 @@ const mapStateToProps = ({ todos, filter }: AppState) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  loadTodos: bindActionCreators(loadTodos, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App as any);

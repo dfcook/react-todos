@@ -56,7 +56,7 @@ export default ({ filter, todos, toggleTodo, deleteTodo, updateFilter }: TodoLis
       bordered={true}
       pagination={false}
       size="middle"
-      footer={() => <Footer todos={todos} updateFilter={updateFilter} />}
+      footer={() => <Footer todos={todos} currentFilter={filter} updateFilter={updateFilter} />}
     />
   );
 };
