@@ -6,6 +6,7 @@ import TodoList from './TodoList';
 import AppState from '../../store/AppState';
 
 const mapStateToProps = (state: AppState) => ({
+  loading: state.todosLoading,
   todos: state.todos,
   filter: state.filter
 });

@@ -6,6 +6,10 @@ import Dispatch from './dispatch';
 
 const baseUrl = 'https://todobackend.apphb.com/todo-backend';
 
+export interface TodosLoadingAction extends Action {
+  loading: boolean;
+}
+
 export interface AddTodoAction extends Action {
   todo: Todo;
 }
@@ -31,7 +35,8 @@ export type TodoAction =
   | ToggleTodoAction
   | DeleteTodoAction
   | UpdateFilterAction
-  | LoadTodosAction;
+  | LoadTodosAction
+  | TodosLoadingAction;
 
 export const addTodoSuccess: ActionCreator<AddTodoAction> = (todo: Todo) => ({
   type: ActionTypes.ADD_TODO_SUCCESS,
@@ -53,17 +58,32 @@ export const loadTodosSuccess: ActionCreator<LoadTodosAction> = (todos: Todo[]) 
   todos
 });
 
+export const updateLoading: ActionCreator<TodosLoadingAction> = (loading: boolean) => ({
+  type: ActionTypes.UPDATE_TODOS_LOADING,
+  loading
+});
+
 export const loadTodos = () => {
   return async (dispatch: Dispatch) => {
+    dispatch(updateLoading(true));
+
     const response = await Axios.get<Todo>(baseUrl);
     dispatch(loadTodosSuccess(response.data));
+    dispatch(updateLoading(false));
   };
 };
 
-export const deleteTodo: ActionCreator<DeleteTodoAction> = (todo: Todo) => ({
-  type: ActionTypes.DELETE_TODO,
+export const deleteTodoSuccess: ActionCreator<DeleteTodoAction> = (todo: Todo) => ({
+  type: ActionTypes.DELETE_TODO_SUCCESS,
   todo
 });
+
+export const deleteTodo = (todo: Todo) => {
+  return async (dispatch: Dispatch) => {
+    await Axios.delete(todo.url);
+    dispatch(deleteTodoSuccess(todo));
+  };
+};
 
 export const toggleTodoSuccess: ActionCreator<AddTodoAction> = (todo: Todo) => ({
   type: ActionTypes.TOGGLE_TODO_SUCCESS,

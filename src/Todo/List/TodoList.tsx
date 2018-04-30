@@ -5,13 +5,14 @@ import Footer from './Footer';
 
 interface TodoListProps {
   filter: string;
+  loading: boolean;
   todos: Todo[];
   toggleTodo: (todo: Todo) => void;
   deleteTodo: (todo: Todo) => void;
   updateFilter: (filter: string) => void;
 }
 
-export default ({ filter, todos, toggleTodo, deleteTodo, updateFilter }: TodoListProps) => {
+export default ({ filter, loading, todos, toggleTodo, deleteTodo, updateFilter }: TodoListProps) => {
   const getTodos = () => {
     switch (filter) {
       case 'ACTIVE':
@@ -55,6 +56,7 @@ export default ({ filter, todos, toggleTodo, deleteTodo, updateFilter }: TodoLis
       dataSource={getTodos()}
       bordered={true}
       pagination={false}
+      loading={loading}
       size="middle"
       footer={() => <Footer todos={todos} currentFilter={filter} updateFilter={updateFilter} />}
     />

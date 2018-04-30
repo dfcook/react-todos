@@ -4,7 +4,8 @@ import {
   DeleteTodoAction,
   ToggleTodoAction,
   UpdateFilterAction,
-  LoadTodosAction
+  LoadTodosAction,
+  TodosLoadingAction
 } from '../actions';
 
 import AppState from '../AppState';
@@ -19,10 +20,16 @@ export default (state: AppState = initialState, action: TodoAction): AppState =>
         todos: [ ...state.todos, (action as AddTodoAction).todo]
       };
 
-    case ActionTypes.DELETE_TODO:
+    case ActionTypes.DELETE_TODO_SUCCESS:
       return {
         ...state,
         todos: state.todos.filter(t => (action as DeleteTodoAction).todo.id !== t.id)
+      };
+
+    case ActionTypes.UPDATE_TODOS_LOADING:
+      return {
+        ...state,
+        todosLoading: (action as TodosLoadingAction).loading
       };
 
     case ActionTypes.TOGGLE_TODO_SUCCESS:
