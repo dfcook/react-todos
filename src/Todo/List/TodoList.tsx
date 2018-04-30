@@ -6,17 +6,16 @@ import Footer from './Footer';
 interface TodoListProps {
   todos: Todo[];
   todosLoading: boolean;
-  onToggleTodo: (todo: Todo) => void;
   onDeleteTodo: (todo: Todo) => void;
   onUpdateFilter: (filter: string) => void;
 }
 
-export default ({ todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
+export default ({ todos, todosLoading, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
   const columns = [{
     key: 'complete',
     width: '10%',
     render: (text: string, record: Todo) => (
-      <input type="checkbox" defaultChecked={record.completed} onClick={() => onToggleTodo(record)} />
+      <input type="checkbox" defaultChecked={record.completed} onClick={() => record.completed = !record.completed} />
     )
   }, {
     key: 'title',

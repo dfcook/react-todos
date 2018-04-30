@@ -20,6 +20,8 @@
     "@types/node": "^9.6.1",
     "@types/react": "^16.1.0",
     "@types/react-dom": "^16.0.4",
+    "mobx": "^4.2.0",
+    "mobx-react": "^5.0.0",
     "typescript": "^2.8.1"
   }
 }
