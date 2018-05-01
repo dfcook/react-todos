@@ -22,10 +22,6 @@ class App extends Component<{}, AppState> {
 
   render() {
     const todos = this.getTodos();
-    const addTodo = this.addTodo.bind(this);
-    const deleteTodo = this.deleteTodo.bind(this);
-    const toggleTodo = this.toggleTodo.bind(this);
-    const updateFilter = this.updateFilter.bind(this);
 
     return (
     <div>
@@ -36,7 +32,7 @@ class App extends Component<{}, AppState> {
       </Row>
       <Row>
         <Col span={12} offset={6}>
-          <AddTodo onNewTodo={addTodo} />
+          <AddTodo onNewTodo={this.addTodo} />
         </Col>
       </Row>
       <Row>
@@ -44,9 +40,9 @@ class App extends Component<{}, AppState> {
           <TodoList
             todos={todos}
             todosLoading={this.state.todosLoading}
-            onDeleteTodo={deleteTodo}
-            onToggleTodo={toggleTodo}
-            onUpdateFilter={updateFilter}
+            onDeleteTodo={this.deleteTodo}
+            onToggleTodo={this.toggleTodo}
+            onUpdateFilter={this.updateFilter}
           />
         </Col>
       </Row>
@@ -54,7 +50,7 @@ class App extends Component<{}, AppState> {
     );
   }
 
-  getTodos() {
+  getTodos = () => {
     const { filter, todos } = this.state;
 
     switch (filter) {
@@ -67,13 +63,13 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  updateFilter(filter: string) {
+  updateFilter = (filter: string) => {
     this.setState({
       filter
     });
   }
 
-  async addTodo(title: string) {
+  addTodo = async (title: string) => {
     const response = await api.add(title);
 
     this.setState({
@@ -81,7 +77,7 @@ class App extends Component<{}, AppState> {
     });
   }
 
-  async refreshTodos() {
+  refreshTodos = async () => {
     try {
       this.setState({ todosLoading: true });
       const response = await api.fetch();
@@ -91,7 +87,7 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  async deleteTodo(todo: Todo) {
+  deleteTodo = async (todo: Todo) => {
     await api.delete(todo);
 
     this.setState({
@@ -99,7 +95,7 @@ class App extends Component<{}, AppState> {
     });
   }
 
-  async toggleTodo(todo: Todo) {
+  toggleTodo = async (todo: Todo) => {
     const updated = await api.update({
       ...todo,
       completed: !todo.completed
