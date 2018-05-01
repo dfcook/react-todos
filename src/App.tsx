@@ -38,6 +38,7 @@ class App extends Component<{}, AppState> {
       <Row>
         <Col span={12} offset={6}>
           <TodoList
+            currentFilter={this.state.filter}
             todos={todos}
             todosLoading={this.state.todosLoading}
             onDeleteTodo={this.deleteTodo}

@@ -4,6 +4,7 @@ import Todo from '../../../types/Todo';
 import Footer from './Footer';
 
 interface TodoListProps {
+  currentFilter: string;
   todos: Todo[];
   todosLoading: boolean;
   onToggleTodo: (todo: Todo) => void;
@@ -11,7 +12,7 @@ interface TodoListProps {
   onUpdateFilter: (filter: string) => void;
 }
 
-export default ({ todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
+export default ({ currentFilter, todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
   const columns = [{
     key: 'complete',
     width: '10%',
@@ -46,7 +47,7 @@ export default ({ todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilte
       pagination={false}
       loading={todosLoading}
       size="middle"
-      footer={() => <Footer todos={todos} onFilterChange={onUpdateFilter} />}
+      footer={() => <Footer currentFilter={currentFilter} todos={todos} onFilterChange={onUpdateFilter} />}
     />
   );
 };
