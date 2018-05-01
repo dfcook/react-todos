@@ -1,16 +1,17 @@
 import React from 'react';
 import { Button, Table } from 'antd';
-import Todo from '../../types/Todo';
+import Todo from '../../../types/Todo';
 import Footer from './Footer';
 
 interface TodoListProps {
+  currentFilter: string;
   todos: Todo[];
   todosLoading: boolean;
   onDeleteTodo: (todo: Todo) => void;
   onUpdateFilter: (filter: string) => void;
 }
 
-export default ({ todos, todosLoading, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
+export default ({ currentFilter, todos, todosLoading, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
   const columns = [{
     key: 'complete',
     width: '10%',
@@ -45,7 +46,7 @@ export default ({ todos, todosLoading, onDeleteTodo, onUpdateFilter }: TodoListP
       pagination={false}
       loading={todosLoading}
       size="middle"
-      footer={() => <Footer todos={todos} onFilterChange={onUpdateFilter} />}
+      footer={() => <Footer currentFilter={currentFilter} todos={todos} onFilterChange={onUpdateFilter} />}
     />
   );
 };

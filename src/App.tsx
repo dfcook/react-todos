@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import { Col, Row } from 'antd';
 import './App.css';
 
-import TodoList from './Todo/List/TodoList';
-import AddTodo from './Todo/Add/AddTodo';
+import TodoList from './components/Todo/List/TodoList';
+import AddTodo from './components/Todo/Add/AddTodo';
 import { TodoStore } from './store/TodoStore';
 import Todo from './types/Todo';
 
@@ -40,6 +40,7 @@ class App extends Component<AppProps, {}> {
       <Row>
         <Col span={12} offset={6}>
           <TodoList
+            currentFilter={store.filter}
             todos={todos}
             todosLoading={store.todosLoading}
             onDeleteTodo={deleteTodo}
@@ -49,6 +50,10 @@ class App extends Component<AppProps, {}> {
       </Row>
     </div>
     );
+  }
+
+  componentDidMount() {
+    this.props.store.refreshTodos();
   }
 }
 
