@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import api from './api';
 import { Col, Row } from 'antd';
 import './App.css';
 
-import TodoList from './Todo/List/TodoList';
-import AddTodo from './Todo/Add/AddTodo';
+import TodoList from './components/Todo/List/TodoList';
+import AddTodo from './components/Todo/Add/AddTodo';
 import Todo from './types/Todo';
 
 interface AppState {
@@ -19,8 +19,6 @@ class App extends Component<{}, AppState> {
     todosLoading: false,
     todos: []
   };
-
-  private readonly baseUrl = 'https://todobackend.apphb.com/todo-backend';
 
   render() {
     const todos = this.getTodos();
@@ -76,10 +74,7 @@ class App extends Component<{}, AppState> {
   }
 
   async addTodo(title: string) {
-    const response = await axios.post<Todo>(this.baseUrl, {
-      title,
-      completed: false
-    });
+    const response = await api.add(title);
 
     this.setState({
       todos: [ ...this.state.todos, response.data ]
@@ -87,13 +82,17 @@ class App extends Component<{}, AppState> {
   }
 
   async refreshTodos() {
-    this.setState({ todosLoading: true });
-    const response = await axios.get<Todo[]>(this.baseUrl);
-    this.setState({ todos: response.data, todosLoading: false });
+    try {
+      this.setState({ todosLoading: true });
+      const response = await api.fetch();
+      this.setState({ todos: response.data });
+    } finally {
+      this.setState({ todosLoading: false });
+    }
   }
 
   async deleteTodo(todo: Todo) {
-    await axios.delete(todo.url);
+    await api.delete(todo);
 
     this.setState({
       todos: this.state.todos.filter(t => todo.id !== t.id)
@@ -101,15 +100,13 @@ class App extends Component<{}, AppState> {
   }
 
   async toggleTodo(todo: Todo) {
-    const updated = {
+    const updated = await api.update({
       ...todo,
       completed: !todo.completed
-    };
-
-    await axios.patch(updated.url, updated);
+    });
 
     this.setState({
-      todos: this.state.todos.map(t => todo.id === t.id ? updated : t)
+      todos: this.state.todos.map(t => todo.id === t.id ? updated.data : t)
     });
   }
 
