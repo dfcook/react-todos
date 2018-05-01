@@ -1,5 +1,5 @@
 import React from 'react';
-import Todo from '../../types/Todo';
+import Todo from '../../../types/Todo';
 import Button from 'antd/lib/button';
 
 interface FooterProps {
@@ -10,6 +10,7 @@ interface FooterProps {
 
 export default ({ todos, currentFilter, updateFilter }: FooterProps) => {
   const outstanding = todos.filter(todo => !todo.completed).length;
+  const getButtonType = (type: string) => currentFilter === type ? 'primary' : undefined;
 
   return (
     <div>
@@ -18,21 +19,23 @@ export default ({ todos, currentFilter, updateFilter }: FooterProps) => {
       </div>
       <div style={{width: '40%', display: 'inline-block', textAlign: 'right'}}>
         <Button
-          type={currentFilter === 'ALL' ? 'primary' : undefined}
+          type={getButtonType('ALL')}
           style={{marginRight: '10px'}}
           onClick={() => updateFilter('ALL')}
         >
           All
         </Button>
+        
         <Button
-          type={currentFilter === 'ACTIVE' ? 'primary' : undefined}
+          type={getButtonType('ACTIVE')}
           style={{marginRight: '10px'}}
           onClick={() => updateFilter('ACTIVE')}
         >
           Active
         </Button>
+
         <Button
-          type={currentFilter === 'COMPLETED' ? 'primary' : undefined}
+          type={getButtonType('COMPLETED')}
           onClick={() => updateFilter('COMPLETED')}
         >
           Completed

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Col, Row } from 'antd';
 import './App.css';
 
-import TodoList from './Todo/List/TodoListContainer';
-import AddTodo from './Todo/Add/AddTodoContainer';
+import TodoList from './containers/Todo/List/TodoListContainer';
+import AddTodo from './containers/Todo/Add/AddTodoContainer';
 import Todo from './types/Todo';
 
 import AppState from './store/AppState';

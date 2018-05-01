@@ -1,10 +1,8 @@
 import { Action, ActionCreator } from 'redux';
 import ActionTypes from './actionTypes';
 import Todo from './../types/Todo';
-import Axios from 'axios';
+import api from '../api';
 import Dispatch from './dispatch';
-
-const baseUrl = 'https://todobackend.apphb.com/todo-backend';
 
 export interface TodosLoadingAction extends Action {
   loading: boolean;
@@ -45,10 +43,7 @@ export const addTodoSuccess: ActionCreator<AddTodoAction> = (todo: Todo) => ({
 
 export const addTodo = (title: string) => {
   return async (dispatch: Dispatch) => {
-    const response = await Axios.post<Todo>(baseUrl, {
-      title,
-      completed: false
-    });
+    const response = await api.add(title);
     dispatch(addTodoSuccess(response.data));
   };
 };
@@ -67,7 +62,7 @@ export const loadTodos = () => {
   return async (dispatch: Dispatch) => {
     dispatch(updateLoading(true));
 
-    const response = await Axios.get<Todo>(baseUrl);
+    const response = await api.fetch();
     dispatch(loadTodosSuccess(response.data));
     dispatch(updateLoading(false));
   };
@@ -80,7 +75,7 @@ export const deleteTodoSuccess: ActionCreator<DeleteTodoAction> = (todo: Todo) =
 
 export const deleteTodo = (todo: Todo) => {
   return async (dispatch: Dispatch) => {
-    await Axios.delete(todo.url);
+    await api.delete(todo);
     dispatch(deleteTodoSuccess(todo));
   };
 };
@@ -92,12 +87,10 @@ export const toggleTodoSuccess: ActionCreator<AddTodoAction> = (todo: Todo) => (
 
 export const toggleTodo = (todo: Todo) => {
   return async (dispatch: Dispatch) => {
-    const updated = {
+    const response = await api.update({
       ...todo,
       completed: !todo.completed
-    };
-
-    const response = await Axios.patch<Todo>(updated.url, updated);
+    });
     dispatch(toggleTodoSuccess(response.data));
   };
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Table } from 'antd';
-import Todo from '../../types/Todo';
+import Todo from '../../../types/Todo';
 import Footer from './Footer';
 
 interface TodoListProps {
