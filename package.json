@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/react-redux": "^5.0.15",
     "antd": "^3.3.3",
     "axios": "^0.18.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "react-scripts-ts": "2.14.0"
+    "react-redux": "^5.0.7",
+    "react-scripts-ts": "2.14.0",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0"    
   },
   "scripts": {
     "start": "react-scripts-ts start",
