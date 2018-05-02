@@ -2,13 +2,13 @@ import React from 'react';
 import { Input } from 'antd';
 
 interface AddTodoProps {
-  onNewTodo: (title: string) => void;
+  addTodo: (title: string) => void;
 }
 
-export default ({ onNewTodo }: AddTodoProps) => {
+export default ({ addTodo }: AddTodoProps) => {
   const keyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && onNewTodo) {
-      onNewTodo(e.currentTarget.value);
+    if (e.key === 'Enter' && addTodo) {
+      addTodo(e.currentTarget.value);
       e.currentTarget.value = '';
     }
   };

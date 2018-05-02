@@ -6,18 +6,29 @@ import Footer from './Footer';
 interface TodoListProps {
   currentFilter: string;
   todos: Todo[];
-  todosLoading: boolean;
-  onToggleTodo: (todo: Todo) => void;
-  onDeleteTodo: (todo: Todo) => void;
-  onUpdateFilter: (filter: string) => void;
+  loading: boolean;
+  toggleTodo: (todo: Todo) => void;
+  deleteTodo: (todo: Todo) => void;
+  updateFilter: (filter: string) => void;
 }
 
-export default ({ currentFilter, todos, todosLoading, onToggleTodo, onDeleteTodo, onUpdateFilter }: TodoListProps) => {
+export default ({ currentFilter, todos, loading, toggleTodo, deleteTodo, updateFilter }: TodoListProps) => {
+  const getTodos = () => {
+    switch (currentFilter) {
+      case 'ACTIVE':
+        return todos.filter(todo => !todo.completed);
+      case 'COMPLETED':
+        return todos.filter(todo => todo.completed);
+      default:
+        return todos;
+    }
+  };
+
   const columns = [{
     key: 'complete',
     width: '10%',
     render: (text: string, record: Todo) => (
-      <input type="checkbox" defaultChecked={record.completed} onClick={() => onToggleTodo(record)} />
+      <input type="checkbox" defaultChecked={record.completed} onClick={() => toggleTodo(record)} />
     )
   }, {
     key: 'title',
@@ -32,7 +43,7 @@ export default ({ currentFilter, todos, todosLoading, onToggleTodo, onDeleteTodo
     key: 'delete',
     width: '10%',
     render: (text: string, record: Todo) => (
-      <span style={{width: '100%', textAlign: 'right'}} onClick={() => onDeleteTodo(record)}>
+      <span style={{width: '100%', textAlign: 'right'}} onClick={() => deleteTodo(record)}>
         <Button>Delete</Button>
       </span>
     )
@@ -42,12 +53,12 @@ export default ({ currentFilter, todos, todosLoading, onToggleTodo, onDeleteTodo
     <Table
       rowKey={(record: Todo) => record.id.toString()}
       columns={columns}
-      dataSource={todos}
+      dataSource={getTodos()}
       bordered={true}
       pagination={false}
-      loading={todosLoading}
+      loading={loading}
       size="middle"
-      footer={() => <Footer currentFilter={currentFilter} todos={todos} onFilterChange={onUpdateFilter} />}
+      footer={() => <Footer currentFilter={currentFilter} todos={todos} onFilterChange={updateFilter} />}
     />
   );
 };
