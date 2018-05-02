@@ -1,5 +1,5 @@
 {
-  "name": "todo-local-ts",
+  "name": "react-todos",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
