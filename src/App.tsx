@@ -6,62 +6,45 @@ import './App.css';
 import TodoList from './components/Todo/List/TodoList';
 import AddTodo from './components/Todo/Add/AddTodo';
 import Todo from './types/Todo';
-
-interface AppState {
-  filter: string;
-  todosLoading: boolean;
-  todos: Todo[];
-}
+import { AppState, TodoContext } from './TodoContext';
 
 class App extends Component<{}, AppState> {
-  state: AppState = {
-    filter: 'ALL',
-    todosLoading: false,
-    todos: []
-  };
+  constructor(props: {}) {
+    super(props);
 
-  render() {
-    const todos = this.getTodos();
-
-    return (
-    <div>
-      <Row type="flex" justify="center" align="top">
-        <Col span={24}>
-          <header className="my-2"><h1>Things To Do</h1></header>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={12} offset={6}>
-          <AddTodo onNewTodo={this.addTodo} />
-        </Col>
-      </Row>
-      <Row>
-        <Col span={12} offset={6}>
-          <TodoList
-            currentFilter={this.state.filter}
-            todos={todos}
-            todosLoading={this.state.todosLoading}
-            onDeleteTodo={this.deleteTodo}
-            onToggleTodo={this.toggleTodo}
-            onUpdateFilter={this.updateFilter}
-          />
-        </Col>
-      </Row>
-    </div>
-    );
+    this.state = {
+      filter: 'ALL',
+      loading: false,
+      todos: [],
+      updateFilter: this.updateFilter,
+      addTodo: this.addTodo,
+      toggleTodo: this.toggleTodo,
+      deleteTodo: this.deleteTodo
+    };
   }
 
-  getTodos = () => {
-    const { filter, todos } = this.state;
-
-    switch (filter) {
-      case 'ACTIVE':
-        return todos.filter(todo => !todo.completed);
-      case 'COMPLETED':
-        return todos.filter(todo => todo.completed);
-      default:
-        return todos;
-    }
+  render() {
+    return (
+      <TodoContext.Provider value={this.state}>
+        <div>
+          <Row type="flex" justify="center" align="top">
+            <Col span={24}>
+              <header className="my-2"><h1>Things To Do</h1></header>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12} offset={6}>
+              <AddTodo />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12} offset={6}>
+              <TodoList />
+            </Col>
+          </Row>
+        </div>
+      </TodoContext.Provider>
+    );
   }
 
   updateFilter = (filter: string) => {
@@ -80,11 +63,11 @@ class App extends Component<{}, AppState> {
 
   refreshTodos = async () => {
     try {
-      this.setState({ todosLoading: true });
+      this.setState({ loading: true });
       const response = await api.fetch();
       this.setState({ todos: response.data });
     } finally {
-      this.setState({ todosLoading: false });
+      this.setState({ loading: false });
     }
   }
 
